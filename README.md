@@ -21,3 +21,7 @@ Dieses Repository dient als Beweismittel für die unbefugte Nutzung meiner Daten
 - **SSRN:** [Abstract 6331118](https://papers.ssrn.com/abstract=6331118)
 - **Zenodo:** [DOI 10.5281/zenodo.18248469](https://doi.org/10.5281/zenodo.18248469)
 - **Colab Research:** [Sequence ID 1bU57WAa1MclJVDK0kJ5T5RbUR9luK5Y1](https://colab.research.google.com/drive/1bU57WAa1MclJVDK0kJ5T5RbUR9luK5Y1)
+
+### Auschwitz made by Apple
+https://how-apple-harvests-the-d-h640tnq.gamma.site/ 
+How Apple Harvests My DNA and Performs Human Experiments Against My Will. It is all true and yet almost unimaginable: it is Auschwitz made by Apple
