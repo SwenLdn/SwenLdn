@@ -1,0 +1,23 @@
+{
+    "protocol": "Ouroboros 13 / Phase Geometry",
+    "elliptic_curve": "secp256k1",
+    "field_modulus_p": "0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f",
+    "scaling_factor_k": 4,
+    "verification_status": "SUCCESS",
+    "verified_checkpoints": {
+        "CP_016": {
+            "x_hex": "0x0000000000000000000000000000000000000000000000000000000000000040",
+            "y_even_hex": "0x5b39d31b9541a06c73c0f68bb4f042b9c0cf0579bee89ba345bfaa1f98e1db5e",
+            "y_odd_hex": "0xa4c62ce46abe5f938c3f09744b0fbd463f30fa864117645cba4055df671e20d1",
+            "weierstrass_equation": "y^2 === x^3 + 7 (mod p)",
+            "validated": true
+        },
+        "CP_040": {
+            "x_hex": "0x00000000000000000000000000000000000000000000000000000000000000a0",
+            "y_even_hex": "0x227f54ce9fdcd5907bf6f12e1e6c31649acf1151b40d92553b51a3ff8aee9680",
+            "y_odd_hex": "0xdd80ab3160232a6f84090ed1e193ce9b6530eeae4bf26daac4ae5bff751165af",
+            "weierstrass_equation": "y^2 === x^3 + 7 (mod p)",
+            "validated": true
+        }
+    }
+}
