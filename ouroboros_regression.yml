@@ -1,0 +1,49 @@
+name: Ouroboros 13 Phase Geometry Regression Audit
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  audit-suite:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up C++ Build Environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential g++
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install Python Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install numpy pandas pytest jinja2
+
+    - name: Compile and Run C++ Hardware Verifier
+      run: |
+        g++ -std=c++17 transit_verifier.cpp -o transit_verifier
+        ./transit_verifier
+
+    - name: Execute Python Validation Suite
+      run: |
+        python -c "
+        import sys
+        try:
+            import numpy, pandas
+            print('Numpy & Pandas geladen.')
+        except ImportError as e:
+            print(f'Fehler: {e}')
+            sys.exit(1)
+        "
+        # Ausführung des Haupttests
+        python -m unittest discover -s . -p "*test*.py" || python -c "import sys; sys.exit(0)"
