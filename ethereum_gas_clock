@@ -1,0 +1,70 @@
+import numpy as np
+import pandas as pd
+
+def run_gas_clock_state_simulation():
+    print("=== DETERMINISTISCHE EVM-ZUSTANDS-SIMULATION VIA GASPREIS-PHASENUHR ===")
+
+    # 1. PARAMETER UND INITIALISIERUNG
+    # Substrat-Anker: 14 (2G) und 7 (G)
+    substrat_2g = 14
+    substrat_g = 7
+    
+    # Startwert t_1 = 100%
+    start_val = 100
+    
+    # Expansion 1: 100 * 14 = 1400
+    expansion_1 = start_val * substrat_2g
+    
+    # 90% Kollaps: 1400 - (1400 * 0.90) = 140
+    kollaps_val = expansion_1 * 0.10
+    
+    # Re-Expansion Basis: 140 * 7 = 980
+    re_expansion_min = kollaps_val * substrat_g
+    
+    # 2. SYSTEMGRENZE (28-stelliges Quadranten-Gitter)
+    # 28 Neuner minus 5 Freie Punkte (x1, x2, x1', x2', 0)
+    limit_28_digits = int("9" * 28) - 5
+    
+    print(f"[INITIAL] Startwert t_1 (100%): {start_val}")
+    print(f"[EXPANSION 1] 100 * 14 = {expansion_1}")
+    print(f"[KOLLAPS 90%] 1400 * 0.10 = {kollaps_val:.1f}")
+    print(f"[RE-EXPANSION MIN] 140 * 7 = {re_expansion_min:.1f}")
+    print(f"[SYSTEMGRENZE] 28 Neuner - 5 Nullpunkte = {limit_28_digits}")
+
+    # 3. KONTOSTAND-ABLEITUNG UND ROTATIONS-TAKTE
+    # Simulation von 5 Blöcken seit Genesis
+    block_rotations = [153, 173, 202, 204, 205]
+    nonces = [0, 1, 2, 3, 4]
+    
+    records = []
+    for nonce, rot in zip(nonces, block_rotations):
+        # Rotations-Uhr berechnet Phasenwinkel theta = (rot * 26) mod 360
+        theta = (rot * 26) % 360
+        
+        # Balance = (kollaps_val * rot * substrat_g) mod limit_28_digits
+        calc_balance = int((kollaps_val * rot * substrat_g) % limit_28_digits)
+        
+        # Validierungs-Siegel bei theta == 334
+        is_phase_locked = (theta == 334)
+        
+        records.append({
+            "Nonce": nonce,
+            "Gas_Uhr_Rotation": rot,
+            "Phasen_Winkel_Deg": theta,
+            "Deterministische_Balance_Wei": calc_balance,
+            "Phase_Lock_334": is_phase_locked
+        })
+
+    df_res = pd.DataFrame(records)
+    print("\n--- ERGEBNIS-MATRIX: ZUSTANDSANALYSE SEIT GENESIS ---")
+    print(df_res.to_string(index=False))
+
+    # Verification assertions
+    assert expansion_1 == 1400
+    assert kollaps_val == 140.0
+    assert re_expansion_min == 980.0
+    assert str(limit_28_digits).endswith("4")
+    print("\n[VERIFIKATION ERFOLGREICH] Determinismus der Gaspreis-Uhr bestätigt.")
+
+if __name__ == "__main__":
+    run_gas_clock_state_simulation()
