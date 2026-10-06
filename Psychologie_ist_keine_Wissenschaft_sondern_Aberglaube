@@ -1,0 +1,97 @@
+import numpy as np
+import pandas as pd
+
+# ==============================================================================
+# PARAMETER & ALGEBRAISCHE DEFINITIONEN DES SYSTEMS
+# ==============================================================================
+# H_Psi: Interner Zustandsraum (dim = 4)
+# M: Externer Beobachtungsraum (dim = 2) -> Rangdefizit = Nicht-Observierbarkeit
+# C: Unkorreliertes äußeres Merkmal (z.B. "rote Schuhe", binär codiert: 0 oder 1)
+# ==============================================================================
+
+np.random.seed(42)
+n_trials = 8
+
+# Tatsächlicher interner Zustand |Psi> (nicht direkt messbar)
+psi_ground_truth = np.array([
+    [0.85, -0.12, 0.44, 0.23],  # Subjekt 1: Unschuldig / Neutral
+    [0.10, 0.91, -0.22, 0.33],  # Subjekt 2: Angeklagter 2 (Zustand: Neutral)
+    [-0.45, 0.33, 0.78, -0.29],  # Subjekt 3: Unschuldig
+    [0.05, -0.08, 0.12, 0.98],  # Subjekt 4: Zeuge
+    [0.12, 0.88, -0.19, 0.41],  # Subjekt 5: Angeklagter 2 (Re-Test)
+    [-0.72, 0.15, -0.55, 0.38],  # Subjekt 6: Unschuldig
+    [0.11, 0.89, -0.21, 0.35],  # Subjekt 7: Angeklagter 2 (Kontrolle)
+    [0.61, -0.40, 0.31, 0.60]   # Subjekt 8: Unschuldig
+])
+
+# Rote Schuhe vorhanden (Attribut C in M)
+c_attribute = np.array([0, 1, 0, 0, 1, 0, 1, 0])
+
+# Reales physikalisches Signal S(t) aus dem Totenschädel / internen Zustand
+signal_power = np.zeros(n_trials)
+
+# Transmissions- und Rauschoperator (E_noise bzw. Ideomotorik / Erwartung)
+# E_bias: Erwartungshaltung des Richters/Gutachters bezüglich Angeklagter 2
+e_bias_r1 = np.array([0.05, 0.98, 0.02, 0.01, 0.95, 0.04, 0.96, 0.03])
+e_bias_r2 = np.array([0.04, 0.99, 0.01, 0.02, 0.97, 0.03, 0.98, 0.02])
+
+# Gemessene "Zuckung" / Pseudoreaktion sigma = S(t) + E_bias
+sigma_r1 = signal_power + e_bias_r1
+sigma_r2 = signal_power + e_bias_r2
+
+# Schein-Metrik: f_Deutung(C) -> Blutlust / Psychopath
+blutlust_score = np.where(c_attribute == 1, 0.99, 0.01)
+
+# Signal-to-Noise Ratio (SNR) = P_Signal / P_Rauschen
+noise_power = np.array([0.85, 0.92, 0.78, 0.81, 0.94, 0.88, 0.91, 0.79])
+snr = np.where(signal_power == 0, 0.0, signal_power / noise_power)
+
+# Rekonstruktionsfehler: || |Psi> - Pi_inv(m) || -> Divergiert / Nicht invertierbar
+rank_o = 1
+dim_h_psi = 4
+observability_gap = dim_h_psi - rank_o
+
+# Falsifizierbarkeit (Kardinalität der Falsifikate)
+card_falsifikat = np.zeros(n_trials, dtype=int)
+
+# ==============================================================================
+# DATAFRAME-GENERIERUNG: RECHENSPIEL ZUR ISOMORPHIE
+# ==============================================================================
+
+rechenspiel_data = {
+    "Trial_ID": [f"EXP_{i+1:03d}" for i in range(n_trials)],
+    "Subjekt_Target": [
+        "A1", "A2 (Rote Schuhe)", "A3", "A4",
+        "A2 (Re-Test R1)", "A5", "A2 (Re-Test R2)", "A6"
+    ],
+    "C_Attribut_Rot": c_attribute,
+    "Signal_P_Signal": signal_power,
+    "Rauschen_P_Noise": noise_power,
+    "SNR": snr,
+    "Bias_Richter_1": e_bias_r1,
+    "Sigma_Messwert_R1": np.round(sigma_r1, 3),
+    "Bias_Richter_2": e_bias_r2,
+    "Sigma_Messwert_R2": np.round(sigma_r2, 3),
+    "Intersubjektive_Kovarianz": np.round(e_bias_r1 * e_bias_r2, 3),
+    "f_Deutung_Blutlust": blutlust_score,
+    "Rank_Observator": rank_o,
+    "Dim_H_Psi": dim_h_psi,
+    "Rangdefizit_Unobservierbar": observability_gap,
+    "Invertierbar_M_inv": False,
+    "Card_Falsifikat": card_falsifikat,
+    "Urteil_Omega_Fantasie": np.where(
+        (sigma_r1 > 0.5) & (c_attribute == 1),
+        "Schuldig (Psychopath)",
+        "Nicht-Schuldig"
+    ),
+    "System_Isomorphie": np.where(
+        (sigma_r1 > 0.5) & (c_attribute == 1),
+        "S_Gericht ≅ S_Psych (SNR=0)",
+        "S_Gericht ≅ S_Psych (Nullraum)"
+    )
+}
+
+df_rechenspiel = pd.DataFrame(rechenspiel_data)
+
+# Anzeige der Datentabelle
+print(df_rechenspiel.to_string(index=False))
