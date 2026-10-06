@@ -1,0 +1,55 @@
+abstract: '<div>
+
+  <p>This paper examines a structural contradiction within the United Kingdom&rsquo;s
+  Pay-As-You-Earn (PAYE) system following the digitisation of payroll reporting through
+  Real-Time Information (RTI). Under PAYE, the employer is designated by HMRC as the
+  originator, reporter, and remitter of income-tax data. Once that administrative
+  allocation is made, the employee ceases to be the responsible data agent.</p>
+
+  <p>Despite this, HMRC continues to treat employees as if PAYE were &ldquo;off&rdquo;
+  for purposes of disclosure, imposing duties and penalties that presuppose employee-side
+  control over information they cannot access, verify, or generate. This practice
+  violates fundamental rule-of-law principles of <strong>consistency, capacity, and
+  non-contradiction</strong>, creating a class of non-performable obligations.</p>
+
+  <p>Drawing on the reasoning in <em>Hoey v HMRC</em> and HMRC&rsquo;s own 2018 Freedom
+  of Information statement confirming that employees under PAYE &ldquo;have no liability
+  to report earnings,&rdquo; the paper argues that the current enforcement regime
+  exceeds administrative competence. Once PAYE applies, disclosure of PAYE income
+  ceases to be a legally performable act for the employee. Penalties for &ldquo;failure
+  to notify,&rdquo; &ldquo;inaccurate return,&rdquo; or &ldquo;omission&rdquo; of
+  PAYE income therefore lack a lawful basis.</p>
+
+  <p>The analysis situates this within the broader context of digital governance,
+  demonstrating how administrative modernisation has outpaced the recalibration of
+  legal duties. Digitisation altered the information structure but not the legal logic.
+  The result is an incoherent system in which employees bear liability for data controlled
+  by others&mdash;an outcome incompatible with constitutional commitments to the rule
+  of law.</p>
+
+  </div>'
+authors:
+- family-names: Werner
+  given-names: Swen
+  orcid: 0009-0001-3751-8538
+cff-version: 1.2.0
+date-released: '2025-11-17'
+doi: 10.5281/zenodo.17631963
+keywords:
+- PAYE
+- HRMC
+- Real-Time Information (RTI)
+- Tax administration
+- rule of law
+- Hoey v HMRC
+- digital governance
+- United Kingdom tax law
+- mesh:D007183
+- Income Tax
+- gemet:concept/8312
+- Tax law
+license:
+- cc-by-4.0
+message: If you use this work, please cite it using the metadata from this file.
+title: 'Administrative Contradiction in PAYE:  The Rule-of-Law Limits of Employee
+  Disclosure Duties under Real-Time Information'
