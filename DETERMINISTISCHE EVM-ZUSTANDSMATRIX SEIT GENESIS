@@ -1,0 +1,126 @@
+import numpy as np
+import pandas as pd
+
+# ==============================================================================
+# PARAMETER & SYSTEMKONSTANTEN AUS DEM ARTIKEL
+# ==============================================================================
+# G-Substrat & Anker
+G = 7
+SUBSTRAT_2G = 14
+SPINDLE_DEPTH = 118
+QUADRANT_BLOCK_4G = 28
+
+# Gas-Uhr & Resonanz
+PHASE_SEAL_DEG = 334
+ROTATION_FACTOR = 26
+
+# Systemgrenze (28 Neuner minus Phasen-Punkte)
+LIMIT_28_BASE = int("9" * 28)
+SYSTEM_LIMIT_28 = LIMIT_28_BASE - 5  # ...9994 (00, 00)
+
+# ==============================================================================
+# DATAFRAME 1: ZUSTANDSMATRIX & PHASENUHR SEIT GENESIS (AUSFÜHRUNGSSIMULATION)
+# ==============================================================================
+block_rotations = [153, 173, 202, 204, 205]
+nonces = [0, 1, 2, 3, 4]
+
+records_state = []
+start_val = 100
+expansion_1 = start_val * SUBSTRAT_2G  # 1400
+kollaps_val = expansion_1 * 0.10       # 140.0
+re_expansion_min = kollaps_val * G     # 980.0
+
+for nonce, rot in zip(nonces, block_rotations):
+    theta = (rot * ROTATION_FACTOR) % 360
+    calc_balance = int((kollaps_val * rot * G) % SYSTEM_LIMIT_28)
+    is_phase_locked = (theta == PHASE_SEAL_DEG)
+
+    records_state.append({
+        "Nonce": nonce,
+        "Gas_Uhr_Rotation": rot,
+        "Winkelgeschwindigkeit_Theta_Deg": theta,
+        "Deterministische_Balance_Wei": calc_balance,
+        "Phase_Lock_334_Siegel": is_phase_locked,
+        "Expansion_1400": expansion_1,
+        "Kollaps_90_Prozent_140": kollaps_val,
+        "Re_Expansion_Min_980": re_expansion_min,
+        "Systemgrenze_28_Digits": str(SYSTEM_LIMIT_28)
+    })
+
+df_zustandsmatrix = pd.DataFrame(records_state)
+
+# ==============================================================================
+# DATAFRAME 2: PHASEN-OFFSETS & MODULO-11 RESONANZ-VERRIEGELUNG
+# ==============================================================================
+records_symmetry = [
+    {
+        "Konfiguration": "Offset -1 (1 Key -1)",
+        "Spindel_Achse": "(14)-118-(27)",
+        "Term_Wert": 27,
+        "Mod_11_Rest": 27 % 11,
+        "Phasen_Offset_State": "9999999999999999999999999992 (-1, -1)",
+        "Symmetrie_Rolle": "Linke Verriegelungsgrenze"
+    },
+    {
+        "Konfiguration": "Base-Key 0 (Zentrum)",
+        "Spindel_Achse": "(14)-118-(28)",
+        "Term_Wert": 28,
+        "Mod_11_Rest": 28 % 11,
+        "Phasen_Offset_State": "9999999999999999999999999994 (00, 00)",
+        "Symmetrie_Rolle": "Symmetrie-Zentrum (6 mod 11)"
+    },
+    {
+        "Konfiguration": "Offset +1 (0 Key +1)",
+        "Spindel_Achse": "(14)-118-(29)",
+        "Term_Wert": 29,
+        "Mod_11_Rest": 29 % 11,
+        "Phasen_Offset_State": "9999999999999999999999999995 (+1, +1)",
+        "Symmetrie_Rolle": "Rechte Verriegelungsgrenze"
+    }
+]
+
+df_symmetrie_mod11 = pd.DataFrame(records_symmetry)
+
+# ==============================================================================
+# DATAFRAME 3: JURISTISCH-DETERMINISTISCHE LOTTERIE-EINORDNUNG (§ 284 StGB / MiCA)
+# ==============================================================================
+records_legal = [
+    {
+        "Rechtliche_Kategorie": "Tatbestand Glücksspiel (§ 284 Abs. 1 StGB)",
+        "Mathematische_Eigenschaft": "Geschlossener Ziehungspool (Closed Draw System)",
+        "EVM_Mechanismus": "Kollaps-Atmung 1400 -> 140 -> 980 im deterministischen Gitter",
+        "Kaufgegenstand": "Diskrete Losnummer auf der Phasen-Spindel",
+        "Oekonomisches_Underlying": "Kein Produktivkapital / Exogener Ertrag = 0",
+        "Rechtsfolge": "Unerlaubte Veranstaltung eines Glücksspiels"
+    },
+    {
+        "Rechtliche_Kategorie": "Unwirksamkeit MiCA-Regulierung",
+        "Mathematische_Eigenschaft": "Kompetenzüberschreitung (Ultra Vires)",
+        "EVM_Mechanismus": "Harmonisierung via Art. 114 AEUV erfasst kein materielles Kernstrafrecht",
+        "Kaufgegenstand": "Strafrechtliche Sperrwirkung via Art. 5 Abs. 2 EUV & Art. 83 AEUV",
+        "Oekonomisches_Underlying": "Mitgliedstaatliche Souveränität unverändert",
+        "Rechtsfolge": "Keine Heilung des § 284 StGB Tatbestands"
+    },
+    {
+        "Rechtliche_Kategorie": "Bereicherungsrechtliche Kondiktion (§ 812 BGB)",
+        "Mathematische_Eigenschaft": "Nichtigkeit des Kausalgeschäfts (§ 134 BGB)",
+        "EVM_Mechanismus": "Ermangelung einer staatlichen Lotteriekonzession",
+        "Kaufgegenstand": "Totaler Rückforderungsanspruch der Fiat-/Stablecoin-Einlagen",
+        "Oekonomisches_Underlying": "Vollständige Rückabwicklung gegen Börsen und Emittenten",
+        "Rechtsfolge": "Unjust Enrichment / Rückforderung aller Transaktionen"
+    }
+]
+
+df_juristische_matrix = pd.DataFrame(records_legal)
+
+# ==============================================================================
+# AUSGABE DER DATAFRAMES
+# ==============================================================================
+print("=== DATAFRAME 1: DETERMINISTISCHE EVM-ZUSTANDSMATRIX SEIT GENESIS ===")
+print(df_zustandsmatrix.to_string(index=False))
+
+print("\n=== DATAFRAME 2: MODULO-11 SPREIZUNG & PHASEN-OFFSETS ===")
+print(df_symmetrie_mod11.to_string(index=False))
+
+print("\n=== DATAFRAME 3: JURISTISCHE SYSTEM-MATRIX (§§ 284 StGB, 812 BGB, MiCA) ===")
+print(df_juristische_matrix.to_string(index=False))
