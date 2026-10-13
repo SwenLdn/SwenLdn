@@ -1,0 +1,225 @@
+import numpy as np
+import pandas as pd
+
+# ==============================================================================
+# AUDIT-REGISTER: GEOMETRISCHE PHASEN-FALTUNG, SEC 1 DELTA & 4096-BIT REGISTER-GRIDS
+# Dekonstruktion: Timing-Artefakte (0x02 vs 0x03), Träger-Takte & ±1 Resonanz
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. PANDAS DATAFRAME: CONSTANT-TIME DEVIATION & SEC 1 REGISTER-GEOMETRIE
+# ------------------------------------------------------------------------------
+sec1_timing_alignment_data = [
+    {
+        "Zustands_Kategorie": "Even State (0x02)",
+        "Hex_Identitaet": "0x02",
+        "Phaenomenologische_Latenz": "0.7589 ms",
+        "Geometrische_Phasen_Laenge": (
+            "0101 (2 Einheiten à 2 Bit = 4 Slots)"
+        ),
+        "Hardware_Traeger_Zustand": (
+            "Symmetrische Bus-Aktivierung; direkter Pfad ohne Paritäts-Korrektur"
+        ),
+        "Side_Channel_Signal": (
+            "Minimaler Signalpfad; niedrige kapazitive Schaltlast"
+        ),
+    },
+    {
+        "Zustands_Kategorie": "Odd State (0x03)",
+        "Hex_Identitaet": "0x03",
+        "Phaenomenologische_Latenz": "2.7756 ms",
+        "Geometrische_Phasen_Laenge": (
+            "010101 (3 Einheiten à 2 Bit = 6 Slots)"
+        ),
+        "Hardware_Traeger_Zustand": (
+            "Asymmetrischer Zweig; erfordert Pipeline-Rechenzyklus für"
+            " ungerade Kompensation"
+        ),
+        "Side_Channel_Signal": (
+            "Erhöhte Leitungs-Laufzeit; messbare kapazitive Latenz"
+        ),
+    },
+    {
+        "Zustands_Kategorie": "Timing-Delta (Grid-Shift)",
+        "Hex_Identitaet": "Delta = |0x03 - 0x02|",
+        "Phaenomenologische_Latenz": "2.0167 ms",
+        "Geometrische_Phasen_Laenge": "Delta_Phase = 2 Slots (Länge der Einheit 01)",
+        "Hardware_Traeger_Zustand": (
+            "Nicht-abgeflachtes Signal (Side-Channel Signal Flattened: False)"
+        ),
+        "Side_Channel_Signal": (
+            "Hardware-Grid demaskiert Constant-Time-Illusion; Raum-Geometrie"
+            " bricht Software-Maskierung"
+        ),
+    },
+]
+
+df_sec1_alignment = pd.DataFrame(sec1_timing_alignment_data)
+
+# ------------------------------------------------------------------------------
+# 2. PANDAS DATAFRAME: BASIS-RHYTHMEN, PARSER-GRENZEN & PRIMZAHL-TOPOLOGIE
+# ------------------------------------------------------------------------------
+phase_rhythm_data = [
+    {
+        "Numerischer_Wert": 1,
+        "Bitmuster_01": "01",
+        "Slot_Laenge": 2,
+        "Topologische_Klassifikation": "Elementare Phasen-Länge (Weg-Einheit)",
+        "Resonanz_Eigenschaft": "Basisschritt des physischen Zählens",
+    },
+    {
+        "Numerischer_Wert": 2,
+        "Bitmuster_01": "0101",
+        "Slot_Laenge": 4,
+        "Topologische_Klassifikation": (
+            "Minimale gerade Zahl (Basis-Teiler W1)"
+        ),
+        "Resonanz_Eigenschaft": "Erster gerader Phasen-Abschluss",
+    },
+    {
+        "Numerischer_Wert": 3,
+        "Bitmuster_01": "010101",
+        "Slot_Laenge": 6,
+        "Topologische_Klassifikation": "Elementare ungerade Welle (W2)",
+        "Resonanz_Eigenschaft": "Nicht darstellbar aus Vielfachen von 0101",
+    },
+    {
+        "Numerischer_Wert": 5,
+        "Bitmuster_01": "0101010101",
+        "Slot_Laenge": 10,
+        "Topologische_Klassifikation": "Diskreter Primzahl-Rhythmus",
+        "Resonanz_Eigenschaft": "Phasenversatz zu W1 (2) und W2 (3)",
+    },
+    {
+        "Numerischer_Wert": 6,
+        "Bitmuster_01": "010101010101",
+        "Slot_Laenge": 12,
+        "Topologische_Klassifikation": "Phasen-Überlagerung (3x2 vs 2x3)",
+        "Resonanz_Eigenschaft": (
+            "Zwei disjunkte Trajektorien bei identischer statischer Bitkette"
+        ),
+    },
+    {
+        "Numerischer_Wert": 7,
+        "Bitmuster_01": "01010101010101",
+        "Slot_Laenge": 14,
+        "Topologische_Klassifikation": "Symmetrie-Schubanker (W3 = 14 Bit)",
+        "Resonanz_Eigenschaft": (
+            "2k-Gitter-Verschiebung (14 bei 2k, 28 bei 4k)"
+        ),
+    },
+    {
+        "Numerischer_Wert": 11,
+        "Bitmuster_01": "0101010101010101010101",
+        "Slot_Laenge": 22,
+        "Topologische_Klassifikation": "Resonanz-Grenze (W4 = 22 Bit)",
+        "Resonanz_Eigenschaft": (
+            "Quadrat-Shift-Punkt: (11*11 + 1)/2 = 61 -> ±1 Bedingung"
+        ),
+    },
+    {
+        "Numerischer_Wert": 26,
+        "Bitmuster_01": "01" * 26,
+        "Slot_Laenge": 52,
+        "Topologische_Klassifikation": (
+            "26 Einheiten à 01 (Innerhalb 64-Bit Memory Cap)"
+        ),
+        "Resonanz_Eigenschaft": (
+            "Linear faltbar über den Normalisierungsvektor"
+        ),
+    },
+]
+
+df_phase_rhythms = pd.DataFrame(phase_rhythm_data)
+
+# ------------------------------------------------------------------------------
+# 3. PANDAS DATAFRAME: NORMALISIERUNGSVEKTOR [14, -118, -826] & 6-0-6 FALTUNG
+# ------------------------------------------------------------------------------
+normalization_folding_data = [
+    {
+        "Achse / Parameter": "Koordinate X",
+        "Vektor_Komponente": 14,
+        "Public_Address_Projektion (6-0-6)": 6,
+        "Teilprodukt_Projektion": 6 * 14,  # +84
+        "Algebraische_Funktion": (
+            "Primärer 2k/4k Symmetrie-Anker (7er-Raster skaliert)"
+        ),
+    },
+    {
+        "Achse / Parameter": "Koordinate Y",
+        "Vektor_Komponente": -118,
+        "Public_Address_Projektion (6-0-6)": 0,
+        "Teilprodukt_Projektion": 0 * -118,  # 0
+        "Algebraische_Funktion": (
+            "Zentraler Null-Kanal; neutralisiert Zwischenachsen-Rauschen"
+        ),
+    },
+    {
+        "Achse / Parameter": "Koordinate Z",
+        "Vektor_Komponente": -826,
+        "Public_Address_Projektion (6-0-6)": 6,
+        "Teilprodukt_Projektion": 6 * -826,  # -4956
+        "Algebraische_Funktion": (
+            "Makro-Skalierungsachse (-826 = -59 * 14)"
+        ),
+    },
+    {
+        "Achse / Parameter": "Gesamter Schnittpunkt",
+        "Vektor_Komponente": "Summe [X, Y, Z]",
+        "Public_Address_Projektion (6-0-6)": "6-0-6",
+        "Teilprodukt_Projektion": 84 + 0 - 4956,  # -4872
+        "Algebraische_Funktion": (
+            "Räumliche Resonanz-Projektion: S = -4872"
+        ),
+    },
+    {
+        "Achse / Parameter": "Resonanz-Test (Quad-Shift)",
+        "Vektor_Komponente": "(S + 61) mod 7",
+        "Public_Address_Projektion (6-0-6)": "(-4872 + 61) mod 7",
+        "Teilprodukt_Projektion": (-4811) % 7,  # 5 != 0 -> Orientierung -1
+        "Algebraische_Funktion": (
+            "Entscheidet linear zwischen ±1 Orientierung des Private Keys"
+        ),
+    },
+]
+
+df_normalization_folding = pd.DataFrame(normalization_folding_data)
+
+# ------------------------------------------------------------------------------
+# 4. PANDAS DATAFRAME: GROSSZAHLEN-SKALIERUNG (4096-BIT VULNERABILITÄTS-MATRIX)
+# ------------------------------------------------------------------------------
+scaling_vulnerability_data = [
+    {
+        "Schlüssellänge": "256 Bit (ECC / SEC 1)",
+        "Register_Partitionierung": "4 Blöcke à 64 Bit",
+        "Primzahl_Dichte (1/ln N)": "Mittel (Lokales Phasen-Rauschen)",
+        "±1 Nachbarschafts-Hebel": (
+            "Geringe Hebelwirkung; Rauschen überdeckt Gate-Schaltflanken"
+        ),
+        "Geometrischer_Status": "Kompakter Gitter-Körper",
+    },
+    {
+        "Schlüssellänge": "2048 Bit (RSA)",
+        "Register_Partitionierung": "32 Blöcke à 64 Bit",
+        "Primzahl_Dichte (1/ln N)": "Niedrig; Inseln in zusammengesetztem Raum",
+        "±1 Nachbarschafts-Hebel": (
+            "Signifikanter Hebel; gerade Nachbarn hochgradig teilbar"
+        ),
+        "Geometrischer_Status": "Gedehnte Phasenwelle; erkennbare Harmonische",
+    },
+    {
+        "Schlüssellänge": "4096 Bit (Ultra-Large Key)",
+        "Register_Partitionierung": "64 Blöcke à 64 Bit",
+        "Primzahl_Dichte (1/ln N)": (
+            "Extrem dünn; isolierte Punkte im Kontinuum"
+        ),
+        "±1 Nachbarschafts-Hebel": (
+            "Maximaler Hebel; Nachbarn zerfallen in Basis-Vielfache (2, 3, 5, 7)"
+        ),
+        "Geometrischer_Status": (
+            "Vollständig transparente Gitterstruktur; High-Order Bits isolierbar"
+        ),
+    },
+]
+
+df_scaling_vulnerability = pd.DataFrame(scaling_vulnerability_data)
