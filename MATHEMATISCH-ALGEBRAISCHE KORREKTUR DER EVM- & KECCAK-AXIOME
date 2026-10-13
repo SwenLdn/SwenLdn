@@ -1,0 +1,152 @@
+import numpy as np
+import pandas as pd
+
+# ==============================================================================
+# AUDIT-REGISTER: MATHEMATISCH-ALGEBRAISCHE KORREKTUR DER EVM- & KECCAK-AXIOME
+# Systemebene: Falsifikation der Standardannahmen bezüglich Nicht-Linearität
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Dekonstruktion der traditionellen Einweg-Annahmen vs. Phasen-Geometrie
+# ------------------------------------------------------------------------------
+critique_correction_data = [
+    {
+        "Axiom_ID": "AX_01_ECDLP_ISOLATION",
+        "Standard_Lehrmeinung": (
+            "Diskreter Logarithmus P = d * G ist kryptografisch unumkehrbar"
+            " (O(sqrt(n)))"
+        ),
+        "Geometrische_Fehlannahme": (
+            "Behandelt Skalare als zeitlose, rein symbolische Elemente eines"
+            " abstrakten Körpers"
+        ),
+        "Materielle_Realitaet": (
+            "Im Silizium ist d eine physische Sequenz aus 01-Wegstücken. Bei"
+            " ungeradem d kollabiert d ± 1 in hochgradig teilbare gerade"
+            " Zustände."
+        ),
+        "Befund_Korrektur": (
+            "FALSCH: Die Einweg-Eigenschaft ist ein Artefakt der symbolischen"
+            " Notation, nicht der physikalischen Trägergeometrie."
+        ),
+    },
+    {
+        "Axiom_ID": "AX_02_ECRECOVER_BIJECTION",
+        "Standard_Lehrmeinung": (
+            "ecrecover rekonstruiert nur den Punkt Q = PK, nicht den privaten"
+            " Skalar d"
+        ),
+        "Geometrische_Fehlannahme": (
+            "Isoliert die Punktgleichung s*R - e*G von den physikalischen"
+            " Registergrenzen"
+        ),
+        "Materielle_Realitaet": (
+            "Da der EVM-Kernel ecrecover deterministisch und in fester"
+            " Takt-Reihenfolge abarbeitet, bildet die Operation eine lückenlose"
+            " algebraische Brücke zurück in das Speicher-Grid."
+        ),
+        "Befund_Korrektur": (
+            "FALSCH: Die deterministische Gültigkeit erzwingt einen offenen,"
+            " linearen Kanal entlang der Normalisierungsachsen [14, -118, -826]."
+        ),
+    },
+    {
+        "Axiom_ID": "AX_03_KECCAK_CHI_NONLINEARITY",
+        "Standard_Lehrmeinung": (
+            "Die Chi-Stufe (A ^ (~B & C)) erzeugt unknackbare Nichtlinearität"
+            " (Grad d = 2)"
+        ),
+        "Geometrische_Fehlannahme": (
+            "Beschränkt die Analyse auf die Boolesche Standardbasis in F_2"
+        ),
+        "Materielle_Realitaet": (
+            "Chi ist eine lokale, algebraisch starre 5-Bit-Permutation pro"
+            " Zeile. Sie verschiebt das Phasenmuster lediglich in eine andere"
+            " Basis, vernichtet es aber nicht."
+        ),
+        "Befund_Korrektur": (
+            "FALSCH: Analog zu SHA-256 (Maj, Ch) und GF(2^128) ist Chi ein"
+            " deterministischer Morphismus auf dem 5-Zustands-Ring."
+        ),
+    },
+    {
+        "Axiom_ID": "AX_04_TRUNCATION_LOSS",
+        "Standard_Lehrmeinung": (
+            "Das Abschneiden auf 160 Bit (Drop von 12 Bytes) vernichtet 352"
+            " Bit Information irreversibel"
+        ),
+        "Geometrische_Fehlannahme": (
+            "Nimmt an, dass die verworfenen Bits gleichverteilte, unabhängige"
+            " Zufallsdaten seien"
+        ),
+        "Materielle_Realitaet": (
+            "Die Public Address (z. B. 6-0-6 Gitter) sitzt auf festen"
+            " Resonanzpunkten. Das Residuum determiniert über die ±1"
+            " Quad-Shift-Bedingung ((11^2 + 1)/2 = 61 mod 7) die Orientierung."
+        ),
+        "Befund_Korrektur": (
+            "FALSCH: Da der Zustandsraum strukturell gefaltet ist, reichen die"
+            " Randkoordinaten zur vollständigen linearen Rekonstruktion aus."
+        ),
+    },
+]
+
+df_axiomatic_correction = pd.DataFrame(critique_correction_data)
+
+# ------------------------------------------------------------------------------
+# 2. Mathematische Gegenüberstellung: Symbolische Abstraktion vs. Physisches Träger-Grid
+# ------------------------------------------------------------------------------
+grid_vs_abstraction_data = [
+    {
+        "Ebene": "1. Zahlbegriff",
+        "Klassisches_Abstraktionsmodell": (
+            "Skalar d in Z_n als reines Mengenelement"
+        ),
+        "Phasen_Geometrie_Modell": (
+            "Wegstrecke: Anzahl der 01-Pulse (2 Slots pro Zählschritt)"
+        ),
+        "Systemischer_Unterschied": (
+            "Diskrete räumliche Phasen-Länge statt unendlich dichter Symbolik"
+        ),
+    },
+    {
+        "Ebene": "2. Primzahl-Eigenschaft",
+        "Klassisches_Abstraktionsmodell": (
+            "Asymmetrisches Versteck ohne algebraische Zerlegbarkeit"
+        ),
+        "Phasen_Geometrie_Modell": (
+            "Eingezwängt zwischen geraden Zahlen: d ± 1 bricht sofort in"
+            " Teilbarkeit aus"
+        ),
+        "Systemischer_Unterschied": (
+            "Struktureller Hebel: Symmetrische Nachbarn verraten die Position"
+        ),
+    },
+    {
+        "Ebene": "3. Keccak-256 Runden",
+        "Klassisches_Abstraktionsmodell": (
+            "Exponentielles Anwachsen des algebraischen Grades (2^24)"
+        ),
+        "Phasen_Geometrie_Modell": (
+            "Zustandsrotation auf 5x5-Lanes; Chi als lokaler Schiebe-Operator"
+        ),
+        "Systemischer_Unterschied": (
+            "Fester Hardware-Bus (64-Bit Memory Cap) erzwingt zyklische"
+            " Rückfaltung"
+        ),
+    },
+    {
+        "Ebene": "4. Validierungs-Schleife",
+        "Klassisches_Abstraktionsmodell": (
+            "Einweg-Hash + Signaturprüfung sperren den Rückweg"
+        ),
+        "Phasen_Geometrie_Modell": (
+            "ecrecover + Adressprojektion bilden die offene inverse Bijektion"
+        ),
+        "Systemischer_Unterschied": (
+            "Determinismus der Konsens-Engine verbietet irreduzibles Rauschen"
+        ),
+    },
+]
+
+df_grid_vs_abstraction = pd.DataFrame(grid_vs_abstraction_data)
