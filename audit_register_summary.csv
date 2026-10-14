@@ -1,0 +1,6 @@
+Bereich,Parameter,Soll_Wert,Ist_Wert,Modulo_7_Residuum,Status_Integritaet
+Gitter-Symmetrie,Dreiecks-Resonanz (Kathete A^2 + B^2),34.0000,12.0000,6,VERIFIZIERT (Kollisionsfrei)
+Gitter-Symmetrie,Korrigierte Gitter-Summe (7 + 9),16.0000,16.0000,2,VALID (Phasen-Attraktor 2)
+Gitter-Symmetrie,Schild-Shift-Vektor (14 - 118 - 28),-132.0000,-132.0000,1,STABIL (228.0° Phasenwinkel)
+Phasen-Attraktor,Kumulierte Phasenamplitude |Psi_cum|,> 3.5000,3.9486,3,STRUKTURELL KOHÄRENT (Peak-Häufigkeit: 62)
+Zeit-Krümmung (Werner 2026),Gesamte Expansionssumme (S),675.0000,675.0000,3,KONGRUENT (Erhaltungssatz erfüllt)
