@@ -1,0 +1,63 @@
+import numpy as np
+import pandas as pd
+
+class GaloisField128IsomorphismSuite:
+    def __init__(self):
+        # Standard-Polynom: P(x) = x^128 + x^7 + x^2 + x + 1
+        self.poly_std = (1 << 128) | (1 << 7) | (1 << 2) | (1 << 1) | 1
+
+    @staticmethod
+    def reverse_128_bits(n: int) -> int:
+        return int(f'{n:0128b}'[::-1], 2)
+
+    def gf2_multiply_std(self, x: int, y: int) -> int:
+        z = 0
+        for i in range(128):
+            if (y >> i) & 1:
+                z ^= x
+            if x & (1 << 127):
+                x = ((x << 1) ^ self.poly_std) & ((1 << 128) - 1)
+            else:
+                x = (x << 1) & ((1 << 128) - 1)
+        return z
+
+    def gf2_invert_std(self, a: int) -> int:
+        def deg(n):
+            return n.bit_length() - 1
+        if a == 0:
+            return 0
+        u, v = a, self.poly_std
+        g1, g2 = 1, 0
+        while u != 1:
+            j = deg(u) - deg(v)
+            if j < 0:
+                u, v = v, u
+                g1, g2 = g2, g1
+                j = -j
+            u ^= (v << j)
+            g1 ^= (g2 << j)
+        return g1 & ((1 << 128) - 1)
+
+def recover_gcm_hash_key(c1: int, t1: int, c2: int, t2: int) -> int:
+    suite = GaloisField128IsomorphismSuite()
+    # GCM verwendet gespiegelte Bitreihenfolge. Wir transformieren in Standard-Körper.
+    delta_c = suite.reverse_128_bits(c1 ^ c2)
+    delta_t = suite.reverse_128_bits(t1 ^ t2)
+    
+    # Inversion im Standard-Körper über erweiterten Euklidischen Algorithmus
+    delta_c_inv = suite.gf2_invert_std(delta_c)
+    
+    # H_std = delta_t * delta_c_inv
+    H_std = suite.gf2_multiply_std(delta_t, delta_c_inv)
+    
+    # Rücktransformation in GCM-Form
+    return suite.reverse_128_bits(H_std)
+
+# Test-Ausführung mit den Demo-Vektoren
+demo_c1 = 0x11111111222222223333333344444444
+demo_c2 = 0x55555555666666667777777788888888
+demo_t1 = 0xe6428d728d728d728d728d728d728d72
+demo_t2 = 0x228e427a1818bebe808080867a7a7b7a
+
+H_recovered = recover_gcm_hash_key(demo_c1, demo_t1, demo_c2, demo_t2)
+print(f"Rekonstruierter Hash-Key H: {hex(H_recovered)}")
