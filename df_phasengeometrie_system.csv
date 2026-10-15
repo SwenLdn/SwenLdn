@@ -1,0 +1,7 @@
+Parameter,Formel / Herleitung,Numerischer_Wert,Modulo_7_Phase,Topologische_Funktion
+Gitter-Dimension (11x11),11 x 11,121,2,Gesamtzustandspunkte im Trägerraum
+System-Mittelpunkt (61),(121 + 1) / 2,61,5,Physischer Nullpunkt-Attraktor / Symmetrieanker
+Gitter-Dimension (5x5),5 x 5,25,4,Basis-Zustandsraum
+Sub-Mittelpunkt (13),(25 + 1) / 2,13,6,Sub-Zentrum / Symmetrieanker 5x5
+Resonanzfeld-Eichung,55 * 5 = 25 * 11,275,2,Phasenraum-Kohärenz / System-Kopplung (11x11 <-> 5x5)
+Reihe B Eichung,67891 mod 7,67891,5,Deterministischer Phasen-Abgleich
