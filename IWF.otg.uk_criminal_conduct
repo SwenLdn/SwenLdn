@@ -1,0 +1,71 @@
+import pandas as pd
+
+iwf_legal_analysis = [
+    {
+        "Category": "Material Criminal Offence",
+        "Statutory Source / Norm": "Criminal Justice Act 1988 (Section 160) / Protection of Children Act 1978 (Section 1)",
+        "Legal Assessment & Offence Criteria": (
+            "Actively searching or crawling web pages containing CSAM satisfies the objective elements (actus reus) "
+            "of 'making' or 'possessing' indecent images. UK courts (e.g., R v Bowden) establish that automated "
+            "browser caching or data logging constitutes possession. These are strict-liability offenses with no "
+            "general exemption for private actors."
+        ),
+        "Operational Reality": "Independent private scraping or 'vigilante' intelligence gathering remains immediately criminal."
+    },
+    {
+        "Category": "Legal Status of the IWF",
+        "Statutory Source / Norm": "E-Commerce Directive / Online Safety Act Framework",
+        "Legal Assessment & Offence Criteria": (
+            "The IWF is a registered charity, not a law enforcement agency. It has transitioned from a reactive "
+            "notice-and-takedown hotline into a proactive intelligence operations engine without possessing formal "
+            "statutory powers or Crown authority."
+        ),
+        "Operational Reality": "Functions as a private intermediary operating outside the constitutional boundaries of state law enforcement."
+    },
+    {
+        "Category": "Monopoly on Criminal Investigation",
+        "Statutory Source / Norm": "Police and Criminal Evidence Act 1984 (PACE)",
+        "Legal Assessment & Offence Criteria": (
+            "Investigative and search powers are legally restricted to state police organs. The UK constitution "
+            "does not recognize the licensing or delegation of criminal search privileges to private entities to bypass "
+            "substantive criminal law."
+        ),
+        "Operational Reality": "Enforces a strict public-interest reservation of powers in criminal detection."
+    },
+    {
+        "Category": "Prosecutorial Arrangements",
+        "Statutory Source / Norm": "CPS & NPCC Prosecution Policy Memo / Sexual Offences Act 2003 (Section 46)",
+        "Legal Assessment & Offence Criteria": (
+            "No direct statutory exemption or Home Office MoU exists. The IWF's operations are shielded entirely "
+            "by a joint Crown Prosecution Service (CPS) and National Police Chiefs' Council (NPCC) policy. "
+            "The CPS exercises structural discretion, determining that prosecution is not in the public interest "
+            "due to a recognized 'lawful excuse' framework."
+        ),
+        "Operational Reality": "Relies on procedural prosecutorial immunity rather than an actionable statutory defense."
+    },
+    {
+        "Category": "Verified Operational Data",
+        "Statutory Source / Norm": "Official IWF Crawler Disclosures (iwf.org.uk)",
+        "Legal Assessment & Offence Criteria": (
+            "The organization actively deploys an automated web crawler utilizing cryptographic hashing tech. "
+            "Since 2021, the system has scanned over 19 million web pages and 91 million images. In 2025 alone, "
+            "it actioned 311,600 web pages, explicitly confirming that the majority of findings stem from proactive "
+            "searching, not external public reports."
+        ),
+        "Operational Reality": "Factual confirmation of systematic, proactive automated data retrieval across public networks."
+    },
+    {
+        "Category": "Corporate Shielding & Platform Strategy",
+        "Statutory Source / Norm": "Platform Liability Defenses & Hashing Frameworks",
+        "Legal Assessment & Offence Criteria": (
+            "Global technology platforms offload the legal and operational risks of content pre-screening to the IWF. "
+            "The charity acts as a legal and liability firewall, processing encrypted hashes to protect tech companies "
+            "while enabling compliance audits under the Online Safety Act."
+        ),
+        "Operational Reality": "Serves as a structural risk-mitigation buffer for multinational technology enterprises."
+    }
+]
+
+df = pd.DataFrame(iwf_legal_analysis)
+markdown_table = df.to_markdown(index=False)
+print(markdown_table)
