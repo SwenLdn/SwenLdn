@@ -1,0 +1,4 @@
+Phase,Ne,Migration_m,Lambda_1,Lambda_2_Mischer,Lambda_3,Spektralluecke_1_minus_Lambda2,Relaxationszeit_Tau_Generationen,Absorptions_Senken,System_Zustand,Topologie_Dynamik,Excel_Formelanbindung,Excel_Blatt_Referenz
+Phase 1: Isolation,10,0.0,1.0,1.0,0.95,0.0,inf,2,Blockade (Absorbierend),"Zwei absorbierende Ränder (j=0, j=2Ne); vollständige Fixierung / Verlust",=1-E2,carl_alexander_audit_master-v9.xlsx -> Sheet 17 (Markov Spektral-Analyse)
+Phase 2: Genfluss-Rettung,50,0.125,1.0,0.875,0.758,0.125,8.0,0,Maximal Ergodisch,Dynamisches Fließgleichgewicht (p_global); Erhalt der Heterozygotie,=1-E3,carl_alexander_audit_master-v9.xlsx -> Sheet 17 (Markov Spektral-Analyse)
+Phase 3: Re-Isolation,15,0.01,1.0,0.99,0.947,0.01,100.0,0,Metastabil / Quasistationär,"12,5-facher Einbruch der Spektrallücke; Randdrift-Instabilität",=1-E4,carl_alexander_audit_master-v9.xlsx -> Sheet 17 (Markov Spektral-Analyse)
