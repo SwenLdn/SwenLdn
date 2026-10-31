@@ -1,0 +1,130 @@
+import pandas as pd
+
+bverfg_paradoxon_data = [
+    {
+        "Stufe": 1,
+        "Systemische_Dimension": (
+            "1. Die materielle Klageweg-Sperre (Filterfalle)"
+        ),
+        "Traditionelles_BVerfG_Leitbild": (
+            "Art. 93 Abs. 1 Nr. 4a GG i.V.m. § 90 BVerfGG: "
+            "Individuell betroffener Bürger rügt nach Erschöpfung des"
+            " ordentlichen Rechtswegs einen konkreten, isolierten Hoheitsakt."
+        ),
+        "Digitale_Systemrealitaet_(Aporie)": (
+            "Digitale Zugangsbarrieren (Fehlermasken, fehlende Slots,"
+            " AGB-Verweisungen) bewegen sich unterhalb ökonomischer Streitwert-"
+            " und Bagatellgrenzen. Der ordentliche Rechtsweg ist de facto"
+            " wirtschaftlich und prozedural abgeschnitten."
+        ),
+        "Verfassungsrechtlicher_Bruch": (
+            "Art. 19 Abs. 4 GG (Effektiver Rechtsschutz /"
+            " Justizgewährleistungsanspruch) wird durch Kumulation"
+            " mikrostruktureller Hürden systematisch ausgehebelt."
+        ),
+        "Prozedurale_Blockade": (
+            "Kein isoliert anfechtbarer Verwaltungsakt; Verweisung auf"
+            " zivilrechtliche oder interne Beschwerde-Sackgassen."
+        ),
+    },
+    {
+        "Stufe": 2,
+        "Systemische_Dimension": "2. Das Beweislast- & Annahmefilter-Paradoxon",
+        "Traditionelles_BVerfG_Leitbild": (
+            "§ 93a BVerfGG: Annahme nur bei grundsätzlicher"
+            " verfassungsrechtlicher Bedeutung oder zur Durchsetzung von"
+            " Grundrechten bei substanziierter Darlegung."
+        ),
+        "Digitale_Systemrealitaet_(Aporie)": (
+            "Bürger kann serverseitige Fehler/Blockaden bei Client-Side"
+            " Rendering (HTML/DOM) technisch nicht auditieren. Kammern"
+            " verwerfen Beschwerden als 'nicht hinreichend substanziiert' oder"
+            " als 'einzelfallbezogene Trivialität'."
+        ),
+        "Verfassungsrechtlicher_Bruch": (
+            "Art. 20 Abs. 3 GG (Rechtsstaatsprinzip) i.V.m."
+            " Amtsermittlungsgrundsatz: Faktische Beweislastumkehr zugunsten"
+            " fehlerhafter staatlicher IT-Systeme."
+        ),
+        "Prozedurale_Blockade": (
+            "Struktureller Ausschluss: Systemischer Verfassungsbruch aus"
+            " Millionen Kleinstfehlern erreicht niemals die Senatsebene zur"
+            " Grundsatzentscheidung."
+        ),
+    },
+    {
+        "Stufe": 3,
+        "Systemische_Dimension": "3. Instrumentalisierung & Objektifizierung",
+        "Traditionelles_BVerfG_Leitbild": (
+            "Rechtsuchender Bürger tritt als freies, autonomes Rechtssubjekt im"
+            " Rahmen gesetzlicher Verfahren auf (Art. 1 Abs. 1 GG)."
+        ),
+        "Digitale_Systemrealitaet_(Aporie)": (
+            "Monopoldienstleistungen (Führerschein, Basiskonto) werden"
+            " instrumentalisiert: Behörden/Institutionen nutzen Pflichttermine"
+            " für Maßregelungen oder Repressalien wegen vorheriger"
+            " Systemkritik/Aufsichtsbeschwerden."
+        ),
+        "Verfassungsrechtlicher_Bruch": (
+            "Art. 1 Abs. 1 GG (Verletzung der Dürig'schen Objektformel): Der"
+            " Bürger wird zum wehrlosen Objekt administrativer Zermürbung"
+            " herabgewürdigt; Art. 17 GG (Petitionsrecht) wird sanktioniert."
+        ),
+        "Prozedurale_Blockade": (
+            "Machtmissbrauch erfolgt informell im Rahmen gebundener"
+            " Verwaltungsvorgänge ohne justiziable Protokollierung."
+        ),
+    },
+    {
+        "Stufe": 4,
+        "Systemische_Dimension": "4. Pflichtkollision der Verfassungsorgane",
+        "Traditionelles_BVerfG_Leitbild": (
+            "BVerfG agiert strikt reaktiv als 'Hüter der Verfassung'"
+            " ausschließlich innerhalb formell eröffneter Zuständigkeiten"
+            " (Subsidiaritätsprinzip)."
+        ),
+        "Digitale_Systemrealitaet_(Aporie)": (
+            "Exekutive lagert Grundrechtsbindung in automatisierte Blackboxes"
+            " und AGBs aus. Verschanzen hinter formellen Annahmeschranken führt"
+            " zur Duldung der schleichenden Entkernung."
+        ),
+        "Verfassungsrechtlicher_Bruch": (
+            "Art. 1 Abs. 1 Satz 2 GG: Verpflichtung aller staatlichen Gewalt"
+            " (auch der Verfassungsgerichtsbarkeit), die Menschenwürde aktiv"
+            " zu achten und zu schützen."
+        ),
+        "Prozedurale_Blockade": (
+            "Verschiebung der Verantwortung zwischen Fachgerichten,"
+            " Landesaufsicht und BVerfG erzeugt einen rechtsfreien Raum im"
+            " Exekutivhandeln."
+        ),
+    },
+    {
+        "Stufe": 5,
+        "Systemische_Dimension": (
+            "5. Öffentliche Sphäre & Soziologischer Kollaps"
+        ),
+        "Traditionelles_BVerfG_Leitbild": (
+            "Bürgerliches Vertrauen in die Institutionen wird durch"
+            " funktionierenden Rechtsweg und ordnungsgemäße Gesetzgebung"
+            " gesichert."
+        ),
+        "Digitale_Systemrealitaet_(Aporie)": (
+            "Adressierung an Pressestelle und Öffentlichkeit als Notventil:"
+            " Alltagserfahrung von Machtlosigkeit gegen digitale Monopole führt"
+            " zu zivilisatorischer Entfremdung und politischer Zersplitterung."
+        ),
+        "Verfassungsrechtlicher_Bruch": (
+            "Art. 20 Abs. 1 & 2 GG (Demokratie- und Sozialstaatsprinzip):"
+            " Legitimationsverlust der Staatsgewalt, wenn die"
+            " freiheitlich-demokratische Grundordnung in der Praxis zur"
+            " bürokratischen Chimäre erstarrt."
+        ),
+        "Prozedurale_Blockade": (
+            "Institutionelle Selbstabschottung durch standardisierte"
+            " Textbausteine und Verweigerung inhaltlicher Auseinandersetzung."
+        ),
+    },
+]
+
+df_bverfg_paradoxon = pd.DataFrame(bverfg_paradoxon_data)
